@@ -11,12 +11,19 @@ public class TestSquareImage extends ActivityInstrumentationTestCase2<SquareImag
         super(SquareImageActivity.class);
     }
 
+    /**
+     * Start the testing activity and find the SquareImageView
+     * @return the square image view
+     */
     private View getImageViewOnActivity() {
         Activity activity = getActivity();
         getInstrumentation().waitForIdleSync();
         return activity.findViewById(SquareImageActivity.IMAGE_ID);
     }
 
+    /**
+     * Tests that the image is square when the activity is created
+     */
     public void testImageStartsSquare() {
 
         final View squareImage = getImageViewOnActivity();
@@ -29,6 +36,9 @@ public class TestSquareImage extends ActivityInstrumentationTestCase2<SquareImag
     }
 
 
+    /**
+     * Tests that the image remains square after the width is set 2 times bigger
+     */
     public void testImageSquareAfterBiggerSize() {
 
         final View squareImage = getImageViewOnActivity();
@@ -55,6 +65,9 @@ public class TestSquareImage extends ActivityInstrumentationTestCase2<SquareImag
 
     }
 
+    /**
+     * Tests that the image is still square after the width is set to half
+     */
     public void testImageSquareAfterSmallerSize() {
 
         final View squareImage = getImageViewOnActivity();

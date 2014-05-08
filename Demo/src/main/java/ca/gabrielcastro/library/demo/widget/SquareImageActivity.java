@@ -9,6 +9,9 @@ import android.widget.FrameLayout;
 import ca.gabrielcastro.library.demo.app.BaseActivity;
 import ca.gabrielcastro.library.widget.SquareImageView;
 
+/**
+ * An activity used to test SquareImageView
+ */
 public class SquareImageActivity extends BaseActivity {
 
     public static final int IMAGE_ID = android.R.id.primary;
