@@ -24,28 +24,10 @@ import android.test.UiThreadTest;
 
 import java.util.concurrent.CountDownLatch;
 
+import ca.gabrielcastro.library.Helpers;
 import ca.gabrielcastro.library.threading.WrongThreadException;
 
 public class ThreadCheckingTests extends AndroidTestCase {
-
-    private static Handler uiThread = new Handler(Looper.getMainLooper());
-
-
-    /**
-     * new need this because @UiThreadTest doesn't work here from some reason
-     * @param r what to run
-     */
-    private void runOnUiAndWait(final Runnable r) throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-        uiThread.post(new Runnable() {
-            @Override
-            public void run() {
-                r.run();
-                latch.countDown();
-            }
-        });
-        latch.await();
-    }
 
     // Next three methods hate the UI thread
 
@@ -54,7 +36,7 @@ public class ThreadCheckingTests extends AndroidTestCase {
      */
     @UiThreadTest // TODO: WTF why isn't this working
     public void testCheckNotMainFromMain() throws InterruptedException {
-        runOnUiAndWait(new Runnable() {
+        Helpers.runOnUiAndWait(new Runnable() {
             @Override
             public void run() {
 
@@ -122,7 +104,7 @@ public class ThreadCheckingTests extends AndroidTestCase {
      */
     @UiThreadTest // TODO: WTF why isn't this working
     public void testCheckMainFromMain() throws Exception {
-        runOnUiAndWait(new Runnable() {
+        Helpers.runOnUiAndWait(new Runnable() {
             @Override
             public void run() {
                 WrongThreadException.ensureMain();
