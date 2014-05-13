@@ -21,6 +21,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * An Implementation of an {@link java.util.concurrent.Executor} that will run on a
@@ -53,7 +54,9 @@ public class LooperExecutor implements Executor {
 
     @Override
     public void execute(@NonNull Runnable command) {
-        mHandler.post(command);
+        if (!mHandler.post(command)) {
+            throw new RejectedExecutionException();
+        }
     }
 
 }
