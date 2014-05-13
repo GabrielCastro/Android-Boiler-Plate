@@ -44,7 +44,7 @@ public abstract class BindableArrayAdapter<T> extends ArrayAdapter<T> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = newView(parent);
+            convertView = newView(parent, position);
         }
         bind(convertView, getItem(position), position);
         return convertView;
@@ -54,10 +54,11 @@ public abstract class BindableArrayAdapter<T> extends ArrayAdapter<T> {
      * Gets called when a new View is required by the adapter
      * This method should only <b>create</b> the view, not bind the data to it
      * @param parent the container for the View
+     * @param position the row
      * @return A new unbound view
      */
     @NonNull
-    protected abstract View newView(ViewGroup parent);
+    protected abstract View newView(ViewGroup parent, int position);
 
     /**
      * Called when an object to be bound to its view
