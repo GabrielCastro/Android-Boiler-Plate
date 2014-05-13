@@ -18,6 +18,8 @@ package ca.gabrielcastro.library.widget;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +38,7 @@ import ca.gabrielcastro.library.threading.WrongThreadException;
  */
 public class MultiAdapter extends BaseAdapter {
 
-
+    private Context mContext;
     private ArrayAdapter<CharSequence> mHeaderAdapter;
     private ArrayList<BaseAdapter> mSectionAdapters;
     private final int mMaxCount;
@@ -57,6 +59,7 @@ public class MultiAdapter extends BaseAdapter {
         mSectionAdapters = new ArrayList<>(maxSections);
         mMaxCount = maxSections;
         mSize = 0;
+        mContext = context;
     }
 
     /**
@@ -69,11 +72,12 @@ public class MultiAdapter extends BaseAdapter {
      *                      by the MultiAdapter and should not be modified else where or there
      *                      will be unexpected results
      */
-    public MultiAdapter(int maxSections, ArrayAdapter<CharSequence> headerAdapter) {
+    public MultiAdapter(Context context, int maxSections, ArrayAdapter<CharSequence> headerAdapter) {
         mHeaderAdapter = headerAdapter;
         mSectionAdapters = new ArrayList<>(maxSections);
         mMaxCount = maxSections;
         mSize = 0;
+        mContext = context;
     }
 
     /**
@@ -86,7 +90,7 @@ public class MultiAdapter extends BaseAdapter {
      * @throws java.lang.IllegalStateException                                       if called off the main thread
      * @throws ca.gabrielcastro.library.widget.MultiAdapter.TooManySectionsException if there are already the max number of sections set
      */
-    public void addSection(CharSequence title, BaseAdapter sectionAdapter) {
+    public void addSection(CharSequence title, @NonNull BaseAdapter sectionAdapter) {
         WrongThreadException.ensureMain();
         if (mSectionAdapters.size() == mMaxCount) {
             throw new TooManySectionsException(mMaxCount);
@@ -106,6 +110,15 @@ public class MultiAdapter extends BaseAdapter {
         });
 
         notifyDataSetChanged();
+    }
+
+    /**
+     * @see #addSection(CharSequence, android.widget.BaseAdapter)
+     * @param titleRes title for the header
+     * @param sectionAdapter adapter for the section
+     */
+    public void addSection(@StringRes int titleRes, @NonNull BaseAdapter sectionAdapter) {
+        addSection(mContext.getText(titleRes), sectionAdapter);
     }
 
     /**
